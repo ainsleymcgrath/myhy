@@ -19,6 +19,9 @@ tox = "^4.2.5"
 ipython = "^8.8.0"
 pdbpp = "^0.10.3"
 
+[tool.poetry.scripts]
+myhy = 'myhy.cli:cli'
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
