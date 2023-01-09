@@ -22,7 +22,7 @@ def simple_lisp():
             return "".join(args)
 
     @lisp.function(name="lol")
-    def laugh(*_):
+    def laugh():
         return "hahaha"
 
     return lisp
@@ -43,7 +43,7 @@ def simple_lisp():
         # quirk! single-item s-expressions evaluate to their contents
         ("(sup (pup) (up up))", ["sup", "pup", ["up", "up"]]),
         # try a func with a configured name
-        ("(lol wheeeee)", "hahaha"),
+        ("(lol)", "hahaha"),
         ("(laugh 1)", ["laugh", "1"]),
     ],
 )
