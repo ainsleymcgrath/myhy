@@ -1,0 +1,83 @@
+[tool.poetry]
+name = "myhy"
+version = "0.0.0"
+description = ""
+authors = ["Ainsley McGrath <mcgrath.ainsley@gmail.com>"]
+readme = "README.md"
+packages = [{include = "myhy"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+[tool.poetry.group.dev.dependencies]
+mypy = "^0.991"
+pytest = "^7.2.0"
+flake8 = "^6.0.0"
+black = "^22.12.0"
+pylint = "^2.15.9"
+tox = "^4.2.5"
+ipython = "^8.8.0"
+pdbpp = "^0.10.3"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.mypy]
+disallow_untyped_defs = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+no_implicit_reexport = true
+
+[tool.isort]
+profile = "black"
+
+[tool.pylint.main]
+# Use multiple processes to speed up Pylint. Specifying 0 will auto-detect the
+# number of processors available to use, and will cap the count on Windows to
+# avoid hangs.
+jobs = 0
+
+# Pickle collected data for later comparisons.
+persistent = true
+
+# When enabled, pylint would attempt to guess common misconfiguration and emit
+# user-friendly hints instead of false-positive error messages.
+suggestion-mode = true
+
+[tool.pylint.basic]
+# Good variable names which should always be accepted, separated by a comma.
+good-names = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z", "do", "id", "_"]
+
+[tool.pylint.design]
+# Maximum number of public methods for a class (see R0904).
+max-public-methods = 20
+
+# Minimum number of public methods for a class (see R0903).
+min-public-methods = 0
+
+[tool.pylint.exceptions]
+# Exceptions that will emit a warning when caught.
+overgeneral-exceptions = ["BaseException", "Exception"]
+
+[tool.pylint.format]
+# Maximum number of characters on a single line.
+max-line-length = 88
+
+# Maximum number of lines in a module.
+max-module-lines = 400
+
+[tool.pylint.miscellaneous]
+# List of note tags to take in consideration, separated by a comma.
+notes = ["FIXME", "XXX", "TODO", "NOTE"]
+
+[tool.pylint.similarities]
+# Comments are removed from the similarity computation
+ignore-comments = true
+
+# Docstrings are not removed from the similarity computation
+ignore-docstrings = false
+
+[tool.pylint.variables]
+# List of names allowed to shadow builtins
+allowed-redefined-builtins = ['id']
