@@ -34,10 +34,12 @@ Rules & quirks:
 
 See unit tests for more info.
 """
-
+from __future__ import annotations
 
 import re
+from collections.abc import Callable, Iterator
 from functools import partial
+from typing import Any
 
 S_EXPRESSION = re.compile(r"^\((.*)\)$")
 SPACE = " "
@@ -45,7 +47,7 @@ LEFT_PAREN = "("
 RIGHT_PAREN = ")"
 
 
-def unwrap(expression):
+def unwrap(expression: str) -> str:
     """Take the parens of a string-represntation of an s-experssion.
     If it's not an s-expression, just return the string."""
     match = S_EXPRESSION.match(expression)
@@ -54,14 +56,14 @@ def unwrap(expression):
     return expression
 
 
-def is_s_expr(expression):
+def is_s_expr(expression: str) -> bool:
     """Predicate to see if a string is an s-expression."""
     chars = list(expression)
     first_char, last_char = chars[0], chars[-1]
     return first_char == LEFT_PAREN and last_char == RIGHT_PAREN
 
 
-def take_til_end_s_expr(it):
+def take_til_end_s_expr(it: Iterator[str]) -> str:
     """Slight jank. Take elements from a string iterator until right paren seen."""
     nested_s_expr = ""
     found_end = False
@@ -80,7 +82,7 @@ def take_til_end_s_expr(it):
     return nested_s_expr
 
 
-def elements(expression):
+def elements(expression: str) -> list[str]:
     """Break out the elements of an s-expression into a list of strings.
     List members are either atoms or (string representations of) s-expressions."""
     output = []
@@ -110,24 +112,28 @@ def elements(expression):
     return output
 
 
+AnyFunc = Callable[..., Any]
+
+
 class Lisp:
     """Use an instance to register plain functions as keywords in your mini language.
     After registration, `.evaluate()` is the public API for parsing and executing
     s-expressions.
     """
 
-    def __init__(self):
-        self._functions = {}
+    def __init__(self) -> None:
+        self._functions: dict[str, AnyFunc] = {}
 
-    def function(self, func=None, name=None):
+    def function(self, func: AnyFunc | None = None, name: str | None = None) -> AnyFunc:
         """Decorate functions so they become functions in your mini language."""
         if func is None and name is not None:
             return partial(self.function, name=name)
 
+        assert func is not None
         self._functions[name or func.__name__] = func
         return func
 
-    def evaluate(self, expression):
+    def evaluate(self, expression: str) -> list[Any] | str | None:
         """Evaluate an s-expression, using any registered functions as intended."""
         els = elements(expression)
         if els == []:
