@@ -1,17 +1,17 @@
 """Provide an API for implementing a LISP.
 
 Public API is the Lisp() class.
-An instance of Lisp() is a registry for any lisp operators (aka functions) that you
+An instance of Lisp() is a registry for any lisp functions (aka functions) that you
 want available in s-expressions.
 
 Take this idiotic language for example:
     lisp = Lisp()
 
-    @lisp.operator
+    @lisp.function
     def scream(*args):
         return 'AAAAAHHHHHHH'
 
-    @lisp.operator
+    @lisp.function
     def lose_it(*args):
         return 'I AM LOSING IT'
 
@@ -117,14 +117,14 @@ class Lisp:
     """
 
     def __init__(self):
-        self._operators = {}
+        self._functions = {}
 
-    def operator(self, func=None, name=None):
+    def function(self, func=None, name=None):
         """Decorate functions so they become functions in your mini language."""
         if func is None and name is not None:
-            return partial(self.operator, name=name)
+            return partial(self.function, name=name)
 
-        self._operators[name or func.__name__] = func
+        self._functions[name or func.__name__] = func
         return func
 
     def evaluate(self, expression):
@@ -138,8 +138,8 @@ class Lisp:
         if is_s_expr(first):
             return self.evaluate(first)
 
-        if first in self._operators:
-            fn = self._operators[first]
+        if first in self._functions:
+            fn = self._functions[first]
             args = map(self.evaluate, rest)
             return fn(*args)
 

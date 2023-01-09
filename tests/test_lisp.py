@@ -6,22 +6,22 @@ from myhy import Lisp
 
 @pytest.fixture
 def simple_lisp():
-    """Add some simple operators to a Lisp()."""
+    """Add some simple functions to a Lisp()."""
     lisp = Lisp()
 
-    @lisp.operator
+    @lisp.function
     def eq(*args):
         normalized = (int(a) if str(a).isdigit() else a for a in args)
         return len(set(normalized)) == 1
 
-    @lisp.operator
+    @lisp.function
     def add(*args):
         try:
             return sum(map(int, args))
         except ValueError:
             return "".join(args)
 
-    @lisp.operator(name="lol")
+    @lisp.function(name="lol")
     def laugh(*_):
         return "hahaha"
 
